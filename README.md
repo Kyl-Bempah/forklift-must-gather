@@ -65,23 +65,23 @@ oc adm must-gather --image=quay.io/kubev2v/forklift-must-gather:latest -- MUST_G
 
 When both `MUST_GATHER_SINCE` and `MUST_GATHER_SINCE_TIME` are set, `MUST_GATHER_SINCE_TIME` takes precedence. When neither is set, all available logs are collected.
 
-### Unpacked (non-tarred) output
+### Packed (tarred) output
 
-By default, must-gather packs all collected artifacts into a single `must-gather.tar.gz` for faster transmission. Some tools consume must-gather by reading the collected files and directory structure directly from disk, and cannot read content nested inside the archive.
+By default, must-gather leaves all collected artifacts as a plain, unpacked directory tree. Some tools consume must-gather by reading the collected files and directory structure directly from disk and cannot read content nested inside an archive, so the unpacked layout is the default.
 
-Set `MTV_DO_NOT_TAR` to skip the final tar step and leave the unpacked must-gather tree in place:
+Set `MTV_TAR` to pack all collected artifacts into a single `must-gather.tar.gz` for faster transmission:
 
 ```sh
-oc adm must-gather --image=quay.io/kubev2v/forklift-must-gather:latest -- MTV_DO_NOT_TAR=yes /usr/bin/gather
+oc adm must-gather --image=quay.io/kubev2v/forklift-must-gather:latest -- MTV_TAR=yes /usr/bin/gather
 ```
 
 This also works with targeted gathering and the time-based filtering parameters:
 
 ```sh
-oc adm must-gather --image=quay.io/kubev2v/forklift-must-gather:latest -- MTV_DO_NOT_TAR=yes NS=ns1 PLAN=plan1 /usr/bin/targeted
+oc adm must-gather --image=quay.io/kubev2v/forklift-must-gather:latest -- MTV_TAR=yes NS=ns1 PLAN=plan1 /usr/bin/targeted
 ```
 
-Accepted truthy values are `1`, `y`, `yes`, and `true` (case-insensitive). When unset, the artifacts are tarred as before.
+Accepted truthy values are `1`, `y`, `yes`, and `true` (case-insensitive). When unset, the artifacts are left unpacked.
 
 ### Gathered CRs detailed
 
