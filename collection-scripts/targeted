@@ -29,8 +29,8 @@ find /must-gather -type f -empty -print -delete
 find /must-gather -type d -empty -print -delete
 
 # Leave the plain must-gather tree in place by default; pack it into
-# must-gather.tar.gz only when MTV_TAR is set.
-tar_artifacts
+# must-gather.tar.gz only when MTV_TAR is set. Fail the run if packing fails.
+tar_artifacts || exit 1
 
 echo "Waiting for copy phase..."
 exit 0
