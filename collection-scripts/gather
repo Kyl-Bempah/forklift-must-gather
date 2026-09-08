@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source common.sh
+source "$(dirname "$0")/common.sh"
 
 unset KUBECONFIG
 
@@ -20,8 +20,8 @@ for localns in $(/usr/bin/oc get forkliftcontrollers.forklift.konveyor.io --all-
   wait
 done
 
-# Tar all must-gather artifacts for faster transmission
-# (skipped when MTV_DO_NOT_TAR is set, leaving the plain tree in place)
+# Leave the plain must-gather tree in place by default; pack it into
+# must-gather.tar.gz only when MTV_TAR is set.
 tar_artifacts
 
 
